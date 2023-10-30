@@ -1,0 +1,1672 @@
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE DATABASE `employeeHub_development` DEFAULT CHARACTER SET `utf8mb4`[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE DATABASE `employeeHub_test` DEFAULT CHARACTER SET `utf8mb4`[0m
+  [1m[35m (39.4ms)[0m  [1m[35mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL PRIMARY KEY)[0m
+  [1m[35m (38.2ms)[0m  [1m[35mCREATE TABLE `ar_internal_metadata` (`key` varchar(255) NOT NULL PRIMARY KEY, `value` varchar(255), `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT GET_LOCK('6330521915426169300', 0)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'environment' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::InternalMetadata Create (6.1ms)[0m  [1m[32mINSERT INTO `ar_internal_metadata` (`key`, `value`, `created_at`, `updated_at`) VALUES ('environment', 'development', '2023-10-27 04:43:15.511922', '2023-10-27 04:43:15.511926')[0m
+Migrating to CreatePersonalData (20230728092620)
+  [1m[35m (35.6ms)[0m  [1m[35mCREATE TABLE `personal_data` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `first_name` varchar(25) NOT NULL, `last_name` varchar(50) NOT NULL, `nickname` varchar(255), `email` varchar(255) NOT NULL, `phone_number` varchar(255) NOT NULL, `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL)[0m
+  [1m[35m (37.0ms)[0m  [1m[35mCREATE UNIQUE INDEX `index_personal_data_on_email` ON `personal_data` (`email`)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (5.4ms)[0m  [1m[32mINSERT INTO `schema_migrations` (`version`) VALUES ('20230728092620')[0m
+Migrating to CreateEmployments (20230728093139)
+  [1m[35m (47.6ms)[0m  [1m[35mCREATE TABLE `employments` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `employer` varchar(255) NOT NULL, `date_started` date NOT NULL, `date_ended` date NOT NULL, `personal_data_id` bigint NOT NULL, `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL, INDEX `index_employments_on_personal_data_id` (`personal_data_id`), CONSTRAINT `fk_rails_02a7b3f1fb`
+FOREIGN KEY (`personal_data_id`)
+  REFERENCES `personal_data` (`id`)
+)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (5.4ms)[0m  [1m[32mINSERT INTO `schema_migrations` (`version`) VALUES ('20230728093139')[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT RELEASE_LOCK('6330521915426169300')[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Started GET "/" for ::1 at 2023-10-27 10:14:22 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 13.8ms | Allocations: 16908)
+  Rendered layout layouts/application.html.slim (Duration: 208.5ms | Allocations: 187693)
+Completed 200 OK in 819ms (Views: 211.3ms | ActiveRecord: 1.1ms | Allocations: 828073)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 10:14:25 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 27.4ms | Allocations: 17336)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 32.3ms | Allocations: 19795)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 33.1ms | Allocations: 20033)
+Completed 200 OK in 73ms (Views: 34.7ms | ActiveRecord: 0.6ms | Allocations: 130242)
+
+
+Started POST "/personal_data" for ::1 at 2023-10-27 10:14:44 +0530
+Processing by PersonalDataController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "personal_data_id"=>"", "personal_data"=>{"first_name"=>"AA", "last_name"=>"BB", "nickname"=>"CCCCC", "email"=>"a@gmail.com", "phone_number"=>"987-456-3210"}, "commit"=>"Save"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `personal_data` WHERE `personal_data`.`email` = 'a@gmail.com' LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Create (0.2ms)[0m  [1m[32mINSERT INTO `personal_data` (`first_name`, `last_name`, `nickname`, `email`, `phone_number`, `created_at`, `updated_at`) VALUES ('AA', 'BB', 'CCCCC', 'a@gmail.com', '987-456-3210', '2023-10-27 04:44:44.243339', '2023-10-27 04:44:44.243339')[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mTRANSACTION (5.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  Rendered employments/_employment_fields.html.slim (Duration: 5.3ms | Allocations: 7234)
+  Rendered employments/_form.html.slim (Duration: 9.6ms | Allocations: 11825)
+  Rendered employments/_employment_modal.html.slim (Duration: 38.8ms | Allocations: 68858)
+Completed 200 OK in 55ms (Views: 0.1ms | ActiveRecord: 6.7ms | Allocations: 75641)
+
+
+Started POST "/add_employment" for ::1 at 2023-10-27 10:14:54 +0530
+Processing by EmploymentsController#add_employment as TURBO_STREAM
+  Rendered employments/_employment_fields.html.slim (Duration: 2.8ms | Allocations: 594)
+Completed 200 OK in 7ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 1243)
+
+
+Started POST "/add_employment" for ::1 at 2023-10-27 10:15:06 +0530
+Processing by EmploymentsController#add_employment as TURBO_STREAM
+  Rendered employments/_employment_fields.html.slim (Duration: 0.6ms | Allocations: 594)
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 1204)
+
+
+Started POST "/employments" for ::1 at 2023-10-27 10:15:19 +0530
+Processing by EmploymentsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "employment"=>{"personal_data_id"=>"1", "employer"=>["AA", "BBB", "RR"], "date_started"=>["2023-10-27", "2023-10-31", "2023-10-31"], "date_ended"=>["2023-10-28", "2023-10-31", "2023-10-31"]}, "commit"=>"Save"}
+  [1m[36mPersonalData Load (0.3ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:3:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mCACHE PersonalData Load (0.0ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.3ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('AA', '2023-10-27', '2023-10-28', 1, '2023-10-27 04:45:19.865645', '2023-10-27 04:45:19.865645')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (4.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mPersonalData Load (0.3ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.2ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('BBB', '2023-10-31', '2023-10-31', 1, '2023-10-27 04:45:19.875776', '2023-10-27 04:45:19.875776')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (7.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mPersonalData Load (0.7ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.5ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('RR', '2023-10-31', '2023-10-31', 1, '2023-10-27 04:45:19.895011', '2023-10-27 04:45:19.895011')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (4.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+Redirected to http://localhost:3000/personal_data/1
+Completed 302 Found in 65ms (ActiveRecord: 20.1ms | Allocations: 17161)
+
+
+Started GET "/personal_data/1" for ::1 at 2023-10-27 10:15:19 +0530
+Processing by PersonalDataController#show as TURBO_STREAM
+  Parameters: {"id"=>"1"}
+  [1m[36mPersonalData Load (0.4ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 1 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 18.8ms | Allocations: 26276)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 25.0ms | Allocations: 29729)
+  Rendered layout layouts/application.html.slim (Duration: 31.2ms | Allocations: 37120)
+Completed 200 OK in 34ms (Views: 31.3ms | ActiveRecord: 0.9ms | Allocations: 37925)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:15:22 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.3ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 17.3ms | Allocations: 25480)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 21.6ms | Allocations: 26172)
+  Rendered layout layouts/application.html.slim (Duration: 27.3ms | Allocations: 33423)
+Completed 200 OK in 29ms (Views: 27.2ms | ActiveRecord: 1.1ms | Allocations: 33687)
+
+
+Started GET "/personal_data/1" for ::1 at 2023-10-27 10:15:25 +0530
+Processing by PersonalDataController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPersonalData Load (0.3ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 1 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.4ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 4.6ms | Allocations: 1455)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 5.1ms | Allocations: 1562)
+  Rendered layout layouts/application.html.slim (Duration: 11.9ms | Allocations: 8776)
+Completed 200 OK in 14ms (Views: 11.9ms | ActiveRecord: 0.9ms | Allocations: 9531)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:15:27 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 3.5ms | Allocations: 1566)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 7.1ms | Allocations: 2241)
+  Rendered layout layouts/application.html.slim (Duration: 15.6ms | Allocations: 9536)
+Completed 200 OK in 17ms (Views: 15.1ms | ActiveRecord: 1.3ms | Allocations: 9796)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:20:45 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.3ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 117.0ms | Allocations: 192714)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 139.6ms | Allocations: 209515)
+  Rendered layout layouts/application.html.slim (Duration: 191.2ms | Allocations: 276564)
+Completed 200 OK in 330ms (Views: 192.1ms | ActiveRecord: 2.1ms | Allocations: 574400)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 10:20:47 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 8.1ms | Allocations: 14093)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 10.4ms | Allocations: 16520)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 10.9ms | Allocations: 16758)
+Completed 200 OK in 12ms (Views: 11.7ms | ActiveRecord: 0.0ms | Allocations: 17449)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:21:04 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 3.1ms | Allocations: 1567)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 4.6ms | Allocations: 2251)
+  Rendered layout layouts/application.html.slim (Duration: 10.1ms | Allocations: 9478)
+Completed 200 OK in 11ms (Views: 9.8ms | ActiveRecord: 0.8ms | Allocations: 9748)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:21:05 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.5ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 3.2ms | Allocations: 1566)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 5.2ms | Allocations: 2245)
+  Rendered layout layouts/application.html.slim (Duration: 11.6ms | Allocations: 9463)
+Completed 200 OK in 12ms (Views: 11.0ms | ActiveRecord: 0.9ms | Allocations: 9731)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:21:31 +0530
+
+NameError (uninitialized constant ApplicationController
+Did you mean?  ApplicationRecord):
+
+app/controllers/personal_data_controller.rb:1:in `<main>'
+Started GET "/" for ::1 at 2023-10-27 10:22:04 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 20.5ms | Allocations: 30697)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 25.7ms | Allocations: 35121)
+  Rendered layout layouts/application.html.slim (Duration: 46.0ms | Allocations: 68025)
+Completed 200 OK in 50ms (Views: 44.7ms | ActiveRecord: 2.2ms | Allocations: 71282)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:22:48 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.4ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 22.0ms | Allocations: 30676)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 28.8ms | Allocations: 35091)
+  Rendered layout layouts/application.html.slim (Duration: 47.1ms | Allocations: 67929)
+Completed 200 OK in 52ms (Views: 45.1ms | ActiveRecord: 2.9ms | Allocations: 71175)
+
+
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE DATABASE `employee_management_development` DEFAULT CHARACTER SET `utf8mb4`[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE DATABASE `employee_management_test` DEFAULT CHARACTER SET `utf8mb4`[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE DATABASE `employee_management_development` DEFAULT CHARACTER SET `utf8mb4`[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE DATABASE `employee_management_test` DEFAULT CHARACTER SET `utf8mb4`[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE DATABASE `employee_management_development` DEFAULT CHARACTER SET `utf8mb4`[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE DATABASE `employee_management_test` DEFAULT CHARACTER SET `utf8mb4`[0m
+  [1m[35m (81.1ms)[0m  [1m[35mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL PRIMARY KEY)[0m
+  [1m[35m (60.0ms)[0m  [1m[35mCREATE TABLE `ar_internal_metadata` (`key` varchar(255) NOT NULL PRIMARY KEY, `value` varchar(255), `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL)[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT GET_LOCK('6418091376422054175', 0)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.1ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'environment' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::InternalMetadata Create (6.5ms)[0m  [1m[32mINSERT INTO `ar_internal_metadata` (`key`, `value`, `created_at`, `updated_at`) VALUES ('environment', 'development', '2023-10-27 05:03:50.040923', '2023-10-27 05:03:50.040934')[0m
+Migrating to CreatePersonalData (20230728092620)
+  [1m[35m (70.9ms)[0m  [1m[35mCREATE TABLE `personal_data` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `first_name` varchar(25) NOT NULL, `last_name` varchar(50) NOT NULL, `nick_name` varchar(255), `email_address` varchar(255) NOT NULL, `phone_number` varchar(255) NOT NULL, `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL)[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE UNIQUE INDEX `index_personal_data_on_email` ON `personal_data` (`email`)[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT RELEASE_LOCK('6418091376422054175')[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT GET_LOCK('6418091376422054175', 0)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'environment' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+Migrating to CreatePersonalData (20230728092620)
+  [1m[35m (61.5ms)[0m  [1m[35mCREATE TABLE `personal_data` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `first_name` varchar(25) NOT NULL, `last_name` varchar(50) NOT NULL, `nick_name` varchar(255), `email_address` varchar(255) NOT NULL, `phone_number` varchar(255) NOT NULL, `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL)[0m
+  [1m[35m (80.9ms)[0m  [1m[35mCREATE UNIQUE INDEX `index_personal_data_on_email_address` ON `personal_data` (`email_address`)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (7.4ms)[0m  [1m[32mINSERT INTO `schema_migrations` (`version`) VALUES ('20230728092620')[0m
+Migrating to CreateEmployments (20230728093139)
+  [1m[35m (68.3ms)[0m  [1m[35mCREATE TABLE `employments` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `employer` varchar(255) NOT NULL, `date_started` date NOT NULL, `date_ended` date NOT NULL, `personal_data_id` bigint NOT NULL, `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL, INDEX `index_employments_on_personal_data_id` (`personal_data_id`), CONSTRAINT `fk_rails_02a7b3f1fb`
+FOREIGN KEY (`personal_data_id`)
+  REFERENCES `personal_data` (`id`)
+)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (10.5ms)[0m  [1m[32mINSERT INTO `schema_migrations` (`version`) VALUES ('20230728093139')[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT RELEASE_LOCK('6418091376422054175')[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Started GET "/" for ::1 at 2023-10-27 10:39:02 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 28.3ms | Allocations: 16675)
+  Rendered layout layouts/application.html.slim (Duration: 115.2ms | Allocations: 83973)
+Completed 200 OK in 254ms (Views: 119.4ms | ActiveRecord: 0.5ms | Allocations: 381743)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 10:39:03 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 8.0ms | Allocations: 14110)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 10.4ms | Allocations: 16570)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 11.1ms | Allocations: 16808)
+Completed 200 OK in 64ms (Views: 12.1ms | ActiveRecord: 0.7ms | Allocations: 126885)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:43:44 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 4.5ms | Allocations: 4303)
+  Rendered layout layouts/application.html.slim (Duration: 28.4ms | Allocations: 37023)
+Completed 200 OK in 32ms (Views: 28.5ms | ActiveRecord: 0.8ms | Allocations: 40283)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 10:43:45 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 7.1ms | Allocations: 13150)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 9.7ms | Allocations: 15559)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 10.4ms | Allocations: 15785)
+Completed 200 OK in 14ms (Views: 11.2ms | ActiveRecord: 0.5ms | Allocations: 19334)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:45:09 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 1.1ms | Allocations: 635)
+  Rendered layout layouts/application.html.slim (Duration: 26.1ms | Allocations: 30786)
+Completed 200 OK in 27ms (Views: 26.3ms | ActiveRecord: 0.2ms | Allocations: 31056)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 10:45:12 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 1.6ms | Allocations: 1612)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 1.7ms | Allocations: 1738)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 1.9ms | Allocations: 1821)
+Completed 200 OK in 2ms (Views: 2.2ms | ActiveRecord: 0.0ms | Allocations: 2055)
+
+
+Started POST "/personal_data" for ::1 at 2023-10-27 10:45:29 +0530
+Processing by PersonalDataController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "personal_data_id"=>"", "personal_data"=>{"first_name"=>"AA", "last_name"=>"BB", "nick_name"=>"AABB", "email_address"=>"aabb@gmail.com", "phone_number"=>"987-456-3210"}, "commit"=>"Save"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `personal_data` WHERE `personal_data`.`email_address` = 'aabb@gmail.com' LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Create (0.3ms)[0m  [1m[32mINSERT INTO `personal_data` (`first_name`, `last_name`, `nick_name`, `email_address`, `phone_number`, `created_at`, `updated_at`) VALUES ('AA', 'BB', 'AABB', 'aabb@gmail.com', '987-456-3210', '2023-10-27 05:15:29.403451', '2023-10-27 05:15:29.403451')[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mTRANSACTION (10.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  Rendered employments/_employment_fields.html.slim (Duration: 10.6ms | Allocations: 7106)
+  Rendered employments/_form.html.slim (Duration: 19.0ms | Allocations: 11634)
+  Rendered employments/_employment_modal.html.slim (Duration: 71.9ms | Allocations: 68279)
+Completed 200 OK in 95ms (Views: 0.2ms | ActiveRecord: 12.9ms | Allocations: 74450)
+
+
+Started POST "/add_employment" for ::1 at 2023-10-27 10:45:42 +0530
+Processing by EmploymentsController#add_employment as TURBO_STREAM
+  Rendered employments/_employment_fields.html.slim (Duration: 0.7ms | Allocations: 594)
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 1251)
+
+
+Started POST "/employments" for ::1 at 2023-10-27 10:45:53 +0530
+Processing by EmploymentsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "employment"=>{"personal_data_id"=>"1", "employer"=>["ASDF", "BGHJ"], "date_started"=>["2023-10-01", "2023-10-12"], "date_ended"=>["2023-10-27", "2023-10-27"]}, "commit"=>"Save"}
+  [1m[36mPersonalData Load (0.7ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:3:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mCACHE PersonalData Load (0.0ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.5ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('ASDF', '2023-10-01', '2023-10-27', 1, '2023-10-27 05:15:53.663820', '2023-10-27 05:15:53.663820')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (16.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mPersonalData Load (0.6ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.6ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('BGHJ', '2023-10-12', '2023-10-27', 1, '2023-10-27 05:15:53.693116', '2023-10-27 05:15:53.693116')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (7.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+Redirected to http://localhost:3000/personal_data/1
+Completed 302 Found in 71ms (ActiveRecord: 26.3ms | Allocations: 10918)
+
+
+Started GET "/personal_data/1" for ::1 at 2023-10-27 10:45:53 +0530
+Processing by PersonalDataController#show as TURBO_STREAM
+  Parameters: {"id"=>"1"}
+  [1m[36mPersonalData Load (0.7ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  Rendered personal_data/_personal_data.html.slim (Duration: 23.5ms | Allocations: 24949)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 30.7ms | Allocations: 28300)
+  Rendered layout layouts/application.html.slim (Duration: 31.0ms | Allocations: 28370)
+Completed 500 Internal Server Error in 36ms (ActiveRecord: 0.7ms | Allocations: 29164)
+
+
+
+ActionView::Template::Error (undefined method `nickname' for #<PersonalData:0x00007f4f082ae348>
+Did you mean?  nick_name
+               nick_name?
+               nick_name=):
+    11:
+    12:     div.flex.items-center
+    13:       strong.block.font-medium.mb-1 Nickname:
+    14:       span.ml-2 = personal_data.nick_name
+    15:
+    16:     div.flex.items-center
+    17:       strong.block.font-medium.mb-1 Email:
+
+app/views/personal_data/_personal_data.html.slim:14
+app/views/personal_data/show.html.slim:4
+Started GET "/" for ::1 at 2023-10-27 10:46:41 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 36.3ms | Allocations: 34326)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 42.4ms | Allocations: 38751)
+  Rendered layout layouts/application.html.slim (Duration: 68.2ms | Allocations: 71658)
+Completed 200 OK in 73ms (Views: 67.0ms | ActiveRecord: 2.2ms | Allocations: 74911)
+
+
+Started GET "/personal_data/1" for ::1 at 2023-10-27 10:46:43 +0530
+Processing by PersonalDataController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPersonalData Load (0.7ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 1 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 22.0ms | Allocations: 22747)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 33.9ms | Allocations: 25901)
+  Rendered layout layouts/application.html.slim (Duration: 56.8ms | Allocations: 33352)
+Completed 200 OK in 66ms (Views: 57.3ms | ActiveRecord: 1.1ms | Allocations: 34705)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:46:47 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.4ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 2.7ms | Allocations: 1545)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 5.1ms | Allocations: 2220)
+  Rendered layout layouts/application.html.slim (Duration: 16.6ms | Allocations: 9440)
+Completed 200 OK in 18ms (Views: 16.5ms | ActiveRecord: 0.8ms | Allocations: 9702)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 10:46:48 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 7.7ms | Allocations: 13151)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 10.0ms | Allocations: 15577)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 10.5ms | Allocations: 15805)
+Completed 200 OK in 12ms (Views: 11.4ms | ActiveRecord: 0.0ms | Allocations: 16476)
+
+
+Started POST "/personal_data" for ::1 at 2023-10-27 10:47:05 +0530
+Processing by PersonalDataController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "personal_data_id"=>"", "personal_data"=>{"first_name"=>"BB", "last_name"=>"AA", "nick_name"=>"bbaa", "email_address"=>"bbaa@gmail.com", "phone_number"=>"987-456-3210"}, "commit"=>"Save"}
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM `personal_data` WHERE `personal_data`.`email_address` = 'bbaa@gmail.com' LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Create (0.9ms)[0m  [1m[32mINSERT INTO `personal_data` (`first_name`, `last_name`, `nick_name`, `email_address`, `phone_number`, `created_at`, `updated_at`) VALUES ('BB', 'AA', 'bbaa', 'bbaa@gmail.com', '987-456-3210', '2023-10-27 05:17:05.606130', '2023-10-27 05:17:05.606130')[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mTRANSACTION (18.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  Rendered employments/_employment_fields.html.slim (Duration: 11.7ms | Allocations: 6760)
+  Rendered employments/_form.html.slim (Duration: 21.7ms | Allocations: 11174)
+  Rendered employments/_employment_modal.html.slim (Duration: 29.3ms | Allocations: 14310)
+Completed 200 OK in 67ms (Views: 0.2ms | ActiveRecord: 20.8ms | Allocations: 17972)
+
+
+Started POST "/employments" for ::1 at 2023-10-27 10:47:14 +0530
+Processing by EmploymentsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "employment"=>{"personal_data_id"=>"2", "employer"=>["VVV"], "date_started"=>["2023-10-12"], "date_ended"=>["2023-10-27"]}, "commit"=>"Save"}
+  [1m[36mPersonalData Load (0.3ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 2 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:3:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mCACHE PersonalData Load (0.0ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 2 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.2ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('VVV', '2023-10-12', '2023-10-27', 2, '2023-10-27 05:17:14.163508', '2023-10-27 05:17:14.163508')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (16.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+Redirected to http://localhost:3000/personal_data/2
+Completed 302 Found in 27ms (ActiveRecord: 16.7ms | Allocations: 4737)
+
+
+Started GET "/personal_data/2" for ::1 at 2023-10-27 10:47:14 +0530
+Processing by PersonalDataController#show as TURBO_STREAM
+  Parameters: {"id"=>"2"}
+  [1m[36mPersonalData Load (0.4ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 2 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 2 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 2[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 5.2ms | Allocations: 1398)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 5.7ms | Allocations: 1549)
+  Rendered layout layouts/application.html.slim (Duration: 15.3ms | Allocations: 8794)
+Completed 200 OK in 19ms (Views: 14.0ms | ActiveRecord: 2.3ms | Allocations: 9599)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:47:16 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.6ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.8ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 9.4ms | Allocations: 1606)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 13.9ms | Allocations: 2281)
+  Rendered layout layouts/application.html.slim (Duration: 38.1ms | Allocations: 9511)
+Completed 200 OK in 40ms (Views: 37.2ms | ActiveRecord: 1.9ms | Allocations: 9771)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:48:53 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.7ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 24.1ms | Allocations: 30758)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 28.8ms | Allocations: 35162)
+  Rendered layout layouts/application.html.slim (Duration: 48.4ms | Allocations: 68067)
+Completed 200 OK in 53ms (Views: 46.5ms | ActiveRecord: 2.8ms | Allocations: 71316)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:48:53 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.1ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 2.2ms | Allocations: 1605)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 3.6ms | Allocations: 2284)
+  Rendered layout layouts/application.html.slim (Duration: 9.7ms | Allocations: 9502)
+Completed 200 OK in 10ms (Views: 9.6ms | ActiveRecord: 0.5ms | Allocations: 9762)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:48:54 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.8ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.7ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 8.8ms | Allocations: 1604)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 12.9ms | Allocations: 2278)
+  Rendered layout layouts/application.html.slim (Duration: 27.8ms | Allocations: 9500)
+Completed 200 OK in 30ms (Views: 26.8ms | ActiveRecord: 2.1ms | Allocations: 9758)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:48:54 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (1.1ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.7ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 8.6ms | Allocations: 1603)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 12.8ms | Allocations: 2277)
+  Rendered layout layouts/application.html.slim (Duration: 27.3ms | Allocations: 9507)
+Completed 200 OK in 29ms (Views: 26.1ms | ActiveRecord: 2.3ms | Allocations: 9765)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:48:54 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.7ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (1.0ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 10.4ms | Allocations: 1603)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 15.2ms | Allocations: 2277)
+  Rendered layout layouts/application.html.slim (Duration: 37.0ms | Allocations: 9495)
+Completed 200 OK in 39ms (Views: 35.8ms | ActiveRecord: 2.2ms | Allocations: 9753)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 10:48:55 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 8.3ms | Allocations: 13148)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 10.8ms | Allocations: 15574)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 11.3ms | Allocations: 15800)
+Completed 200 OK in 13ms (Views: 12.1ms | ActiveRecord: 0.0ms | Allocations: 16468)
+
+
+Started POST "/personal_data" for ::1 at 2023-10-27 10:49:11 +0530
+Processing by PersonalDataController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "personal_data_id"=>"", "personal_data"=>{"first_name"=>"CC", "last_name"=>"DD", "nick_name"=>"ccdd", "email_address"=>"ccdd@gmail.com", "phone_number"=>"987-456-3210"}, "commit"=>"Save"}
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `personal_data` WHERE `personal_data`.`email_address` = 'ccdd@gmail.com' LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Create (0.7ms)[0m  [1m[32mINSERT INTO `personal_data` (`first_name`, `last_name`, `nick_name`, `email_address`, `phone_number`, `created_at`, `updated_at`) VALUES ('CC', 'DD', 'ccdd', 'ccdd@gmail.com', '987-456-3210', '2023-10-27 05:19:11.420411', '2023-10-27 05:19:11.420411')[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mTRANSACTION (5.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  Rendered employments/_employment_fields.html.slim (Duration: 12.9ms | Allocations: 6761)
+  Rendered employments/_form.html.slim (Duration: 26.9ms | Allocations: 11173)
+  Rendered employments/_employment_modal.html.slim (Duration: 37.9ms | Allocations: 14309)
+Completed 200 OK in 63ms (Views: 0.1ms | ActiveRecord: 7.0ms | Allocations: 17980)
+
+
+Started POST "/add_employment" for ::1 at 2023-10-27 10:49:20 +0530
+Processing by EmploymentsController#add_employment as TURBO_STREAM
+  Rendered employments/_employment_fields.html.slim (Duration: 3.2ms | Allocations: 594)
+Completed 200 OK in 7ms (Views: 0.4ms | ActiveRecord: 0.0ms | Allocations: 1204)
+
+
+Started POST "/employments" for ::1 at 2023-10-27 10:49:31 +0530
+Processing by EmploymentsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "employment"=>{"personal_data_id"=>"3", "employer"=>["MM", "ZZ"], "date_started"=>["2023-10-10", "2023-10-16"], "date_ended"=>["2023-10-26", "2023-10-25"]}, "commit"=>"Save"}
+  [1m[36mPersonalData Load (0.7ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 3 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:3:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mCACHE PersonalData Load (0.0ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 3 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.4ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('MM', '2023-10-10', '2023-10-26', 3, '2023-10-27 05:19:31.691707', '2023-10-27 05:19:31.691707')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (13.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mPersonalData Load (0.7ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 3 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.5ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('ZZ', '2023-10-16', '2023-10-25', 3, '2023-10-27 05:19:31.718762', '2023-10-27 05:19:31.718762')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (4.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+Redirected to http://localhost:3000/personal_data/3
+Completed 302 Found in 54ms (ActiveRecord: 20.6ms | Allocations: 8060)
+
+
+Started GET "/personal_data/3" for ::1 at 2023-10-27 10:49:31 +0530
+Processing by PersonalDataController#show as TURBO_STREAM
+  Parameters: {"id"=>"3"}
+  [1m[36mPersonalData Load (0.3ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 3 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 3 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 3[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 20.9ms | Allocations: 22822)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 25.5ms | Allocations: 26023)
+  Rendered layout layouts/application.html.slim (Duration: 33.9ms | Allocations: 33472)
+Completed 200 OK in 36ms (Views: 33.8ms | ActiveRecord: 0.9ms | Allocations: 34278)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:49:33 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.6ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 3.8ms | Allocations: 1685)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 7.7ms | Allocations: 2360)
+  Rendered layout layouts/application.html.slim (Duration: 14.7ms | Allocations: 9586)
+Completed 200 OK in 17ms (Views: 14.3ms | ActiveRecord: 1.4ms | Allocations: 9848)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:52:10 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.4ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 18.7ms | Allocations: 30819)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 22.9ms | Allocations: 35243)
+  Rendered layout layouts/application.html.slim (Duration: 50.5ms | Allocations: 69129)
+Completed 200 OK in 55ms (Views: 49.6ms | ActiveRecord: 2.0ms | Allocations: 72380)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:52:14 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 2.3ms | Allocations: 1685)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 3.6ms | Allocations: 2364)
+  Rendered layout layouts/application.html.slim (Duration: 10.2ms | Allocations: 9592)
+Completed 200 OK in 11ms (Views: 10.2ms | ActiveRecord: 0.5ms | Allocations: 9852)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:52:14 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.9ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.8ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 10.0ms | Allocations: 1684)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 14.7ms | Allocations: 2358)
+  Rendered layout layouts/application.html.slim (Duration: 29.2ms | Allocations: 9794)
+Completed 200 OK in 32ms (Views: 28.4ms | ActiveRecord: 2.2ms | Allocations: 10052)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:52:14 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.7ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.9ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 10.5ms | Allocations: 1684)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 15.6ms | Allocations: 2358)
+  Rendered layout layouts/application.html.slim (Duration: 37.5ms | Allocations: 9586)
+Completed 200 OK in 40ms (Views: 36.4ms | ActiveRecord: 2.3ms | Allocations: 9844)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:52:14 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.8ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.8ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 9.5ms | Allocations: 1684)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 13.6ms | Allocations: 2358)
+  Rendered layout layouts/application.html.slim (Duration: 30.8ms | Allocations: 9593)
+Completed 200 OK in 33ms (Views: 29.7ms | ActiveRecord: 2.1ms | Allocations: 9851)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:52:15 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.7ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.9ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 9.4ms | Allocations: 1684)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 13.7ms | Allocations: 2358)
+  Rendered layout layouts/application.html.slim (Duration: 27.9ms | Allocations: 9578)
+Completed 200 OK in 30ms (Views: 26.9ms | ActiveRecord: 2.1ms | Allocations: 9836)
+
+
+Started GET "/" for ::1 at 2023-10-27 10:52:15 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.6ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.8ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 9.6ms | Allocations: 1684)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 15.3ms | Allocations: 2358)
+  Rendered layout layouts/application.html.slim (Duration: 41.7ms | Allocations: 9592)
+Completed 200 OK in 44ms (Views: 40.5ms | ActiveRecord: 2.3ms | Allocations: 9850)
+
+
+Started GET "/personal_data/1" for ::1 at 2023-10-27 10:52:27 +0530
+Processing by PersonalDataController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 1 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 12.9ms | Allocations: 22748)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 15.6ms | Allocations: 25902)
+  Rendered layout layouts/application.html.slim (Duration: 21.1ms | Allocations: 33131)
+Completed 200 OK in 23ms (Views: 20.8ms | ActiveRecord: 0.8ms | Allocations: 34480)
+
+
+Started GET "/personal_data" for ::1 at 2023-10-27 10:53:27 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.9ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 24.7ms | Allocations: 30827)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 40.3ms | Allocations: 35242)
+  Rendered layout layouts/application.html.slim (Duration: 77.7ms | Allocations: 76308)
+Completed 200 OK in 82ms (Views: 76.2ms | ActiveRecord: 2.8ms | Allocations: 79552)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 10:53:30 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 6.4ms | Allocations: 13155)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 8.7ms | Allocations: 15570)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 9.3ms | Allocations: 15800)
+Completed 200 OK in 10ms (Views: 10.0ms | ActiveRecord: 0.0ms | Allocations: 16472)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 10:53:36 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 6.5ms | Allocations: 1608)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 7.3ms | Allocations: 1735)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 7.8ms | Allocations: 1818)
+Completed 200 OK in 10ms (Views: 8.8ms | ActiveRecord: 0.0ms | Allocations: 2053)
+
+
+Started GET "/personal_data/1" for ::1 at 2023-10-27 11:20:54 +0530
+Processing by PersonalDataController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 1 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.5ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 11.5ms | Allocations: 22743)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 14.1ms | Allocations: 25896)
+  Rendered layout layouts/application.html.slim (Duration: 20.4ms | Allocations: 33145)
+Completed 200 OK in 23ms (Views: 20.0ms | ActiveRecord: 1.1ms | Allocations: 34599)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 11:20:59 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 1.5ms | Allocations: 1608)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 1.7ms | Allocations: 1734)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 1.8ms | Allocations: 1817)
+Completed 200 OK in 2ms (Views: 2.1ms | ActiveRecord: 0.0ms | Allocations: 2052)
+
+
+Started GET "/personal_data" for ::1 at 2023-10-27 11:23:36 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.9ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 5.7ms | Allocations: 1685)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 9.1ms | Allocations: 2360)
+  Rendered layout layouts/application.html.slim (Duration: 15.5ms | Allocations: 9593)
+Completed 200 OK in 16ms (Views: 14.5ms | ActiveRecord: 1.4ms | Allocations: 9852)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 11:23:38 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 2.8ms | Allocations: 1603)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 3.3ms | Allocations: 1729)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 3.7ms | Allocations: 1812)
+Completed 200 OK in 6ms (Views: 4.5ms | ActiveRecord: 0.0ms | Allocations: 2046)
+
+
+Started GET "/personal_data/3" for ::1 at 2023-10-27 11:24:02 +0530
+Processing by PersonalDataController#show as HTML
+  Parameters: {"id"=>"3"}
+  [1m[36mPersonalData Load (0.7ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 3 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 3 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.7ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 3[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 8.9ms | Allocations: 1426)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 9.8ms | Allocations: 1528)
+  Rendered layout layouts/application.html.slim (Duration: 24.9ms | Allocations: 8951)
+Completed 200 OK in 30ms (Views: 24.4ms | ActiveRecord: 2.2ms | Allocations: 9704)
+
+
+Started GET "/" for ::1 at 2023-10-27 11:24:03 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.7ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.8ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 8.6ms | Allocations: 1684)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 12.9ms | Allocations: 2358)
+  Rendered layout layouts/application.html.slim (Duration: 26.5ms | Allocations: 9584)
+Completed 200 OK in 28ms (Views: 25.4ms | ActiveRecord: 2.0ms | Allocations: 9843)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 11:24:04 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 7.8ms | Allocations: 1603)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 8.5ms | Allocations: 1729)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 9.1ms | Allocations: 1812)
+Completed 200 OK in 11ms (Views: 10.1ms | ActiveRecord: 0.0ms | Allocations: 2046)
+
+
+Started GET "/" for ::1 at 2023-10-27 12:51:20 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 26.6ms | Allocations: 30377)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 32.0ms | Allocations: 34576)
+  Rendered layout layouts/application.html.slim (Duration: 54.7ms | Allocations: 68664)
+Completed 200 OK in 58ms (Views: 54.5ms | ActiveRecord: 1.1ms | Allocations: 71918)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 12:51:21 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 7.0ms | Allocations: 13155)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 9.4ms | Allocations: 15570)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 9.8ms | Allocations: 15798)
+Completed 200 OK in 11ms (Views: 10.6ms | ActiveRecord: 0.0ms | Allocations: 16470)
+
+
+Started GET "/" for ::1 at 2023-10-27 12:55:00 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.4ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.4ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 4.9ms | Allocations: 1685)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 8.0ms | Allocations: 2364)
+  Rendered layout layouts/application.html.slim (Duration: 19.7ms | Allocations: 9803)
+Completed 200 OK in 22ms (Views: 19.3ms | ActiveRecord: 1.3ms | Allocations: 10063)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 12:55:03 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 1.7ms | Allocations: 1598)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 1.9ms | Allocations: 1724)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 2.0ms | Allocations: 1807)
+Completed 200 OK in 3ms (Views: 2.3ms | ActiveRecord: 0.0ms | Allocations: 2041)
+
+
+Started GET "/" for ::1 at 2023-10-27 12:57:04 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 27.2ms | Allocations: 30839)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 32.2ms | Allocations: 35263)
+  Rendered layout layouts/application.html.slim (Duration: 60.5ms | Allocations: 69686)
+Completed 200 OK in 64ms (Views: 57.9ms | ActiveRecord: 3.4ms | Allocations: 72937)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 12:57:05 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 12.4ms | Allocations: 13156)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 18.9ms | Allocations: 15563)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 19.6ms | Allocations: 15789)
+Completed 200 OK in 23ms (Views: 21.8ms | ActiveRecord: 0.0ms | Allocations: 16458)
+
+
+Started GET "/personal_data/1" for ::1 at 2023-10-27 12:57:11 +0530
+Processing by PersonalDataController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 1 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.4ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 14.6ms | Allocations: 22742)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 17.4ms | Allocations: 25895)
+  Rendered layout layouts/application.html.slim (Duration: 25.7ms | Allocations: 33322)
+Completed 200 OK in 28ms (Views: 25.3ms | ActiveRecord: 1.0ms | Allocations: 34672)
+
+
+Started GET "/" for ::1 at 2023-10-27 12:57:16 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.6ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.4ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 5.7ms | Allocations: 1685)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 7.2ms | Allocations: 2360)
+  Rendered layout layouts/application.html.slim (Duration: 18.4ms | Allocations: 9596)
+Completed 200 OK in 19ms (Views: 17.8ms | ActiveRecord: 1.2ms | Allocations: 9857)
+
+
+Started GET "/personal_data/1" for ::1 at 2023-10-27 12:57:26 +0530
+Processing by PersonalDataController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPersonalData Load (0.6ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 1 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (1.1ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 7.9ms | Allocations: 1426)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 9.2ms | Allocations: 1528)
+  Rendered layout layouts/application.html.slim (Duration: 24.6ms | Allocations: 8752)
+Completed 200 OK in 30ms (Views: 24.0ms | ActiveRecord: 2.2ms | Allocations: 9505)
+
+
+Started GET "/personal_data/1" for ::1 at 2023-10-27 12:59:32 +0530
+Processing by PersonalDataController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPersonalData Load (0.1ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 1 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 15.1ms | Allocations: 28340)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 17.9ms | Allocations: 31557)
+  Rendered layout layouts/application.html.slim (Duration: 42.3ms | Allocations: 64485)
+Completed 200 OK in 51ms (Views: 42.6ms | ActiveRecord: 1.7ms | Allocations: 71483)
+
+
+Started GET "/" for ::1 at 2023-10-27 12:59:35 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 9.3ms | Allocations: 22161)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 15.7ms | Allocations: 26103)
+  Rendered layout layouts/application.html.slim (Duration: 22.4ms | Allocations: 33340)
+Completed 200 OK in 26ms (Views: 23.0ms | ActiveRecord: 0.6ms | Allocations: 33868)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 12:59:38 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 7.6ms | Allocations: 13139)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 10.3ms | Allocations: 15559)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 10.9ms | Allocations: 15789)
+Completed 200 OK in 12ms (Views: 11.6ms | ActiveRecord: 0.0ms | Allocations: 16461)
+
+
+Started POST "/personal_data" for ::1 at 2023-10-27 12:59:59 +0530
+Processing by PersonalDataController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "personal_data_id"=>"", "personal_data"=>{"first_name"=>"QQ", "last_name"=>"RR", "nick_name"=>"qqrr", "email_address"=>"qqrr@gmail.com", "phone_number"=>"987-456-3210"}, "commit"=>"Save"}
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `personal_data` WHERE `personal_data`.`email_address` = 'qqrr@gmail.com' LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Create (0.7ms)[0m  [1m[32mINSERT INTO `personal_data` (`first_name`, `last_name`, `nick_name`, `email_address`, `phone_number`, `created_at`, `updated_at`) VALUES ('QQ', 'RR', 'qqrr', 'qqrr@gmail.com', '987-456-3210', '2023-10-27 07:29:59.733187', '2023-10-27 07:29:59.733187')[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mTRANSACTION (18.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  Rendered employments/_employment_fields.html.slim (Duration: 9.0ms | Allocations: 6760)
+  Rendered employments/_form.html.slim (Duration: 20.1ms | Allocations: 11174)
+  Rendered employments/_employment_modal.html.slim (Duration: 30.2ms | Allocations: 14311)
+Completed 200 OK in 68ms (Views: 0.1ms | ActiveRecord: 19.9ms | Allocations: 17968)
+
+
+Started POST "/employments" for ::1 at 2023-10-27 13:00:12 +0530
+Processing by EmploymentsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "employment"=>{"personal_data_id"=>"4", "employer"=>["RR"], "date_started"=>["2023-10-19"], "date_ended"=>["2023-11-01"]}, "commit"=>"Save"}
+  [1m[36mPersonalData Load (0.3ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 4 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:3:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mCACHE PersonalData Load (0.0ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 4 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.3ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('RR', '2023-10-19', '2023-11-01', 4, '2023-10-27 07:30:12.783065', '2023-10-27 07:30:12.783065')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (19.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+Redirected to http://localhost:3000/personal_data/4
+Completed 302 Found in 29ms (ActiveRecord: 20.0ms | Allocations: 4733)
+
+
+Started GET "/personal_data/4" for ::1 at 2023-10-27 13:00:12 +0530
+Processing by PersonalDataController#show as TURBO_STREAM
+  Parameters: {"id"=>"4"}
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 4 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 4 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 4[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 2.9ms | Allocations: 1398)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 3.4ms | Allocations: 1549)
+  Rendered layout layouts/application.html.slim (Duration: 10.1ms | Allocations: 8794)
+Completed 200 OK in 12ms (Views: 10.1ms | ActiveRecord: 0.6ms | Allocations: 9599)
+
+
+Started GET "/" for ::1 at 2023-10-27 13:00:14 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3, 4)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 3.1ms | Allocations: 1745)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 4.5ms | Allocations: 2420)
+  Rendered layout layouts/application.html.slim (Duration: 13.3ms | Allocations: 9645)
+Completed 200 OK in 14ms (Views: 13.1ms | ActiveRecord: 0.6ms | Allocations: 9905)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 13:01:45 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 1.5ms | Allocations: 1602)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 1.7ms | Allocations: 1728)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 1.8ms | Allocations: 1811)
+Completed 200 OK in 2ms (Views: 2.1ms | ActiveRecord: 0.0ms | Allocations: 2045)
+
+
+Started GET "/personal_data" for ::1 at 2023-10-27 14:50:03 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.4ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.5ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3, 4)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 5.0ms | Allocations: 1744)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 9.9ms | Allocations: 2511)
+  Rendered layout layouts/application.html.slim (Duration: 19.6ms | Allocations: 9939)
+Completed 200 OK in 21ms (Views: 18.6ms | ActiveRecord: 1.9ms | Allocations: 10197)
+
+
+Started GET "/" for ::1 at 2023-10-27 14:53:16 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.3ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3, 4)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 126.4ms | Allocations: 191869)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 140.2ms | Allocations: 208672)
+  Rendered layout layouts/application.html.slim (Duration: 202.4ms | Allocations: 284935)
+Completed 200 OK in 307ms (Views: 202.2ms | ActiveRecord: 2.5ms | Allocations: 582639)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 14:53:20 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 9.9ms | Allocations: 15968)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 12.2ms | Allocations: 18392)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 12.7ms | Allocations: 18630)
+Completed 200 OK in 14ms (Views: 13.5ms | ActiveRecord: 0.0ms | Allocations: 19321)
+
+
+Started POST "/personal_data" for ::1 at 2023-10-27 14:53:43 +0530
+Processing by PersonalDataController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "personal_data_id"=>"", "personal_data"=>{"first_name"=>"MM", "last_name"=>"NN", "nick_name"=>"mmnn", "email_address"=>"mmnn@gmail.com", "phone_number"=>"987-456-3210"}, "commit"=>"Save"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM `personal_data` WHERE `personal_data`.`email_address` = 'mmnn@gmail.com' LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Create (0.1ms)[0m  [1m[32mINSERT INTO `personal_data` (`first_name`, `last_name`, `nick_name`, `email_address`, `phone_number`, `created_at`, `updated_at`) VALUES ('MM', 'NN', 'mmnn', 'mmnn@gmail.com', '987-456-3210', '2023-10-27 09:23:43.858238', '2023-10-27 09:23:43.858238')[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mTRANSACTION (17.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  Rendered employments/_employment_fields.html.slim (Duration: 5.3ms | Allocations: 7106)
+  Rendered employments/_form.html.slim (Duration: 9.5ms | Allocations: 11632)
+  Rendered employments/_employment_modal.html.slim (Duration: 12.4ms | Allocations: 14771)
+Completed 200 OK in 36ms (Views: 0.1ms | ActiveRecord: 17.6ms | Allocations: 20950)
+
+
+Started POST "/employments" for ::1 at 2023-10-27 14:53:56 +0530
+Processing by EmploymentsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "employment"=>{"personal_data_id"=>"5", "employer"=>["ll"], "date_started"=>["2023-10-11"], "date_ended"=>["2023-10-26"]}, "commit"=>"Save"}
+  [1m[36mPersonalData Load (0.3ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 5 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:3:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mCACHE PersonalData Load (0.0ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 5 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.2ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('ll', '2023-10-11', '2023-10-26', 5, '2023-10-27 09:23:56.504100', '2023-10-27 09:23:56.504100')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (15.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+Redirected to http://localhost:3000/personal_data/5
+Completed 302 Found in 24ms (ActiveRecord: 16.4ms | Allocations: 6175)
+
+
+Started GET "/personal_data/5" for ::1 at 2023-10-27 14:53:56 +0530
+Processing by PersonalDataController#show as TURBO_STREAM
+  Parameters: {"id"=>"5"}
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 5 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 5 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 5[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 10.4ms | Allocations: 22796)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 13.5ms | Allocations: 26145)
+  Rendered layout layouts/application.html.slim (Duration: 19.7ms | Allocations: 33394)
+Completed 200 OK in 21ms (Views: 19.6ms | ActiveRecord: 0.6ms | Allocations: 34200)
+
+
+Started GET "/" for ::1 at 2023-10-27 14:53:57 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3, 4, 5)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 2.4ms | Allocations: 1806)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 3.6ms | Allocations: 2486)
+  Rendered layout layouts/application.html.slim (Duration: 9.7ms | Allocations: 9728)
+Completed 200 OK in 10ms (Views: 9.5ms | ActiveRecord: 0.6ms | Allocations: 9999)
+
+
+Started GET "/" for ::1 at 2023-10-27 15:44:54 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.9ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3, 4, 5)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 5.9ms | Allocations: 1803)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 7.6ms | Allocations: 2570)
+  Rendered layout layouts/application.html.slim (Duration: 27.7ms | Allocations: 31215)
+Completed 200 OK in 28ms (Views: 26.7ms | ActiveRecord: 1.4ms | Allocations: 31473)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 15:44:55 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 2.3ms | Allocations: 1624)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 2.5ms | Allocations: 1750)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 2.6ms | Allocations: 1833)
+Completed 200 OK in 3ms (Views: 2.9ms | ActiveRecord: 0.0ms | Allocations: 2067)
+
+
+Started POST "/personal_data" for ::1 at 2023-10-27 15:45:19 +0530
+Processing by PersonalDataController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "personal_data_id"=>"", "personal_data"=>{"first_name"=>"EE", "last_name"=>"BB", "nick_name"=>"KK", "email_address"=>"hh@gmail.com", "phone_number"=>"9874563210"}, "commit"=>"Save"}
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `personal_data` WHERE `personal_data`.`email_address` = 'hh@gmail.com' LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Create (0.3ms)[0m  [1m[32mINSERT INTO `personal_data` (`first_name`, `last_name`, `nick_name`, `email_address`, `phone_number`, `created_at`, `updated_at`) VALUES ('EE', 'BB', 'KK', 'hh@gmail.com', '9874563210', '2023-10-27 10:15:19.777880', '2023-10-27 10:15:19.777880')[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mTRANSACTION (20.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  Rendered employments/_employment_fields.html.slim (Duration: 0.6ms | Allocations: 594)
+  Rendered employments/_form.html.slim (Duration: 1.0ms | Allocations: 873)
+  Rendered employments/_employment_modal.html.slim (Duration: 1.2ms | Allocations: 947)
+Completed 200 OK in 39ms (Views: 0.1ms | ActiveRecord: 21.6ms | Allocations: 4150)
+
+
+Started POST "/employments" for ::1 at 2023-10-27 15:45:30 +0530
+Processing by EmploymentsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "employment"=>{"personal_data_id"=>"6", "employer"=>["RR"], "date_started"=>["2023-10-12"], "date_ended"=>["2023-10-25"]}, "commit"=>"Save"}
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 6 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:3:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mCACHE PersonalData Load (0.0ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 6 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.2ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('RR', '2023-10-12', '2023-10-25', 6, '2023-10-27 10:15:30.407894', '2023-10-27 10:15:30.407894')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (19.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+Redirected to http://localhost:3000/personal_data/6
+Completed 302 Found in 25ms (ActiveRecord: 20.3ms | Allocations: 3872)
+
+
+Started GET "/personal_data/6" for ::1 at 2023-10-27 15:45:30 +0530
+Processing by PersonalDataController#show as TURBO_STREAM
+  Parameters: {"id"=>"6"}
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 6 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 6 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 6[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 1.8ms | Allocations: 1398)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 2.1ms | Allocations: 1500)
+  Rendered layout layouts/application.html.slim (Duration: 7.4ms | Allocations: 8934)
+Completed 200 OK in 9ms (Views: 7.3ms | ActiveRecord: 0.6ms | Allocations: 9691)
+
+
+Started GET "/" for ::1 at 2023-10-27 15:45:31 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.6ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.8ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3, 4, 5, 6)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 10.2ms | Allocations: 1862)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 14.4ms | Allocations: 2536)
+  Rendered layout layouts/application.html.slim (Duration: 29.6ms | Allocations: 9778)
+Completed 200 OK in 31ms (Views: 28.5ms | ActiveRecord: 2.0ms | Allocations: 10038)
+
+
+Started GET "/" for ::1 at 2023-10-27 15:48:41 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3, 4, 5, 6)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 2.5ms | Allocations: 1862)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 3.7ms | Allocations: 2536)
+  Rendered layout layouts/application.html.slim (Duration: 19.5ms | Allocations: 28818)
+Completed 200 OK in 20ms (Views: 19.3ms | ActiveRecord: 0.6ms | Allocations: 29074)
+
+
+Started GET "/" for ::1 at 2023-10-27 15:48:44 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.3ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3, 4, 5, 6)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 3.0ms | Allocations: 1864)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 4.9ms | Allocations: 2543)
+  Rendered layout layouts/application.html.slim (Duration: 11.2ms | Allocations: 9787)
+Completed 200 OK in 13ms (Views: 11.1ms | ActiveRecord: 0.7ms | Allocations: 10044)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-27 17:38:59 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 6.6ms | Allocations: 1609)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 7.3ms | Allocations: 1735)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 7.9ms | Allocations: 1818)
+Completed 200 OK in 10ms (Views: 8.9ms | ActiveRecord: 0.0ms | Allocations: 2050)
+
+
+Started GET "/" for ::1 at 2023-10-30 09:35:15 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.3ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.4ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3, 4, 5, 6)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 7.0ms | Allocations: 1863)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 11.9ms | Allocations: 2630)
+  Rendered layout layouts/application.html.slim (Duration: 23.0ms | Allocations: 9856)
+Completed 200 OK in 25ms (Views: 22.4ms | ActiveRecord: 1.3ms | Allocations: 10115)
+
+
+Started GET "/personal_data/1" for ::1 at 2023-10-30 09:35:18 +0530
+Processing by PersonalDataController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 1 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 2.1ms | Allocations: 1426)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 2.6ms | Allocations: 1528)
+  Rendered layout layouts/application.html.slim (Duration: 8.1ms | Allocations: 8850)
+Completed 200 OK in 9ms (Views: 8.0ms | ActiveRecord: 0.5ms | Allocations: 9605)
+
+
+Started GET "/" for ::1 at 2023-10-30 09:35:22 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.9ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.8ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` IN (1, 2, 3, 4, 5, 6)[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 13.1ms | Allocations: 1862)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 18.4ms | Allocations: 2536)
+  Rendered layout layouts/application.html.slim (Duration: 37.4ms | Allocations: 9663)
+Completed 200 OK in 39ms (Views: 36.1ms | ActiveRecord: 2.3ms | Allocations: 9920)
+
+
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT GET_LOCK('6418091376422054175', 0)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'environment' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('6418091376422054175')[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT GET_LOCK('6418091376422054175', 0)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Migrating to CreateEmployments (20230728093139)
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE `employments`[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('6418091376422054175')[0m
+  [1m[35m (47.5ms)[0m  [1m[35mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL PRIMARY KEY)[0m
+  [1m[35m (38.3ms)[0m  [1m[35mCREATE TABLE `ar_internal_metadata` (`key` varchar(255) NOT NULL PRIMARY KEY, `value` varchar(255), `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT GET_LOCK('6418091376422054175', 0)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'environment' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::InternalMetadata Create (4.9ms)[0m  [1m[32mINSERT INTO `ar_internal_metadata` (`key`, `value`, `created_at`, `updated_at`) VALUES ('environment', 'development', '2023-10-30 04:21:05.227973', '2023-10-30 04:21:05.227977')[0m
+Migrating to CreatePersonalData (20231030041907)
+  [1m[35m (38.3ms)[0m  [1m[35mCREATE TABLE `personal_data` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `first_name` varchar(25) NOT NULL, `last_name` varchar(50) NOT NULL, `nick_name` varchar(255), `email_address` varchar(255) NOT NULL, `phone_number` varchar(255) NOT NULL, `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL)[0m
+  [1m[35m (31.7ms)[0m  [1m[35mCREATE UNIQUE INDEX `index_personal_data_on_email_address` ON `personal_data` (`email_address`)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (5.7ms)[0m  [1m[32mINSERT INTO `schema_migrations` (`version`) VALUES ('20231030041907')[0m
+Migrating to CreateEmployments (20231030041952)
+  [1m[35m (40.3ms)[0m  [1m[35mCREATE TABLE `employments` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `employer` varchar(255) NOT NULL, `date_started` date NOT NULL, `date_ended` date NOT NULL, `personal_data_id` bigint NOT NULL, `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL, INDEX `index_employments_on_personal_data_id` (`personal_data_id`), CONSTRAINT `fk_rails_02a7b3f1fb`
+FOREIGN KEY (`personal_data_id`)
+  REFERENCES `personal_data` (`id`)
+)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (5.7ms)[0m  [1m[32mINSERT INTO `schema_migrations` (`version`) VALUES ('20231030041952')[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT RELEASE_LOCK('6418091376422054175')[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Started GET "/" for ::1 at 2023-10-30 09:51:18 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 4.4ms | Allocations: 4001)
+  Rendered layout layouts/application.html.slim (Duration: 24.5ms | Allocations: 36006)
+Completed 200 OK in 29ms (Views: 25.5ms | ActiveRecord: 0.3ms | Allocations: 39263)
+
+
+Started GET "/personal_data/new" for ::1 at 2023-10-30 09:51:20 +0530
+Processing by PersonalDataController#new as HTML
+  Rendering layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb
+  Rendering personal_data/new.html.slim within layouts/turbo_rails/frame
+  Rendered personal_data/_form.html.slim (Duration: 6.4ms | Allocations: 13045)
+  Rendered personal_data/new.html.slim within layouts/turbo_rails/frame (Duration: 8.5ms | Allocations: 15452)
+  Rendered layout /home/anshuv/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/turbo-rails-1.5.0/app/views/layouts/turbo_rails/frame.html.erb (Duration: 9.0ms | Allocations: 15682)
+Completed 200 OK in 13ms (Views: 9.7ms | ActiveRecord: 0.0ms | Allocations: 19135)
+
+
+Started POST "/personal_data" for ::1 at 2023-10-30 09:51:38 +0530
+Processing by PersonalDataController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "personal_data_id"=>"", "personal_data"=>{"first_name"=>"AA", "last_name"=>"BB", "nick_name"=>"aabb", "email_address"=>"aabb@gmail.com", "phone_number"=>"987-456-3210"}, "commit"=>"Save"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `personal_data` WHERE `personal_data`.`email_address` = 'aabb@gmail.com' LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mPersonalData Create (0.2ms)[0m  [1m[32mINSERT INTO `personal_data` (`first_name`, `last_name`, `nick_name`, `email_address`, `phone_number`, `created_at`, `updated_at`) VALUES ('AA', 'BB', 'aabb', 'aabb@gmail.com', '987-456-3210', '2023-10-30 04:21:38.348021', '2023-10-30 04:21:38.348021')[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  [1m[36mTRANSACTION (4.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/personal_data_controller.rb:16:in `block in create'
+  Rendered employments/_employment_fields.html.slim (Duration: 4.5ms | Allocations: 6763)
+  Rendered employments/_form.html.slim (Duration: 8.4ms | Allocations: 11177)
+  Rendered employments/_employment_modal.html.slim (Duration: 16.2ms | Allocations: 18417)
+Completed 200 OK in 26ms (Views: 0.1ms | ActiveRecord: 5.2ms | Allocations: 21956)
+
+
+Started POST "/add_employment" for ::1 at 2023-10-30 09:51:46 +0530
+Processing by EmploymentsController#add_employment as TURBO_STREAM
+  Rendered employments/_employment_fields.html.slim (Duration: 0.6ms | Allocations: 594)
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 1080)
+
+
+Started POST "/employments" for ::1 at 2023-10-30 09:51:56 +0530
+Processing by EmploymentsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "employment"=>{"personal_data_id"=>"1", "employer"=>["AA", "BB"], "date_started"=>["2023-10-10", "2023-10-11"], "date_ended"=>["2023-10-30", "2023-10-30"]}, "commit"=>"Save"}
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:3:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mCACHE PersonalData Load (0.0ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.2ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('AA', '2023-10-10', '2023-10-30', 1, '2023-10-30 04:21:56.501361', '2023-10-30 04:21:56.501361')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (5.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mEmployment Create (0.2ms)[0m  [1m[32mINSERT INTO `employments` (`employer`, `date_started`, `date_ended`, `personal_data_id`, `created_at`, `updated_at`) VALUES ('BB', '2023-10-11', '2023-10-30', 1, '2023-10-30 04:21:56.510618', '2023-10-30 04:21:56.510618')[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+  [1m[36mTRANSACTION (8.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/employments_controller.rb:7:in `block in create'
+Redirected to http://localhost:3000/personal_data/1
+Completed 302 Found in 24ms (ActiveRecord: 14.9ms | Allocations: 8411)
+
+
+Started GET "/personal_data/1" for ::1 at 2023-10-30 09:51:56 +0530
+Processing by PersonalDataController#show as TURBO_STREAM
+  Parameters: {"id"=>"1"}
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data` WHERE `personal_data`.`id` = 1 LIMIT 1[0m
+  ↳ app/controllers/personal_data_controller.rb:34:in `set_personal_data'
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/show.html.slim within layouts/application
+  [1m[36mEmployment Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `employments` WHERE `employments`.`personal_data_id` = 1 LIMIT 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:24
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:32
+  Rendered personal_data/_personal_data.html.slim (Duration: 14.4ms | Allocations: 23375)
+  Rendered personal_data/show.html.slim within layouts/application (Duration: 18.3ms | Allocations: 26617)
+  Rendered layout layouts/application.html.slim (Duration: 26.4ms | Allocations: 33745)
+Completed 200 OK in 28ms (Views: 26.2ms | ActiveRecord: 0.8ms | Allocations: 34546)
+
+
+Started GET "/" for ::1 at 2023-10-30 09:51:58 +0530
+Processing by PersonalDataController#index as HTML
+  Rendering layout layouts/application.html.slim
+  Rendering personal_data/index.html.slim within layouts/application
+  [1m[36mPersonalData Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `personal_data`[0m
+  ↳ app/views/personal_data/index.html.slim:6
+  [1m[36mPersonalData Load (0.2ms)[0m  [1m[34mSELECT `personal_data`.* FROM `personal_data`[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  [1m[36mEmployment Load (0.2ms)[0m  [1m[34mSELECT `employments`.* FROM `employments` WHERE `employments`.`personal_data_id` = 1[0m
+  ↳ app/views/personal_data/_personal_data.html.slim:54
+  Rendered personal_data/_personal_data.html.slim (Duration: 9.2ms | Allocations: 22015)
+  Rendered personal_data/index.html.slim within layouts/application (Duration: 10.3ms | Allocations: 22707)
+  Rendered layout layouts/application.html.slim (Duration: 16.0ms | Allocations: 29839)
+Completed 200 OK in 17ms (Views: 15.7ms | ActiveRecord: 0.6ms | Allocations: 30097)
+
+

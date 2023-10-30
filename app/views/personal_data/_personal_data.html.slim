@@ -1,0 +1,66 @@
+- if defined?(personal_data)
+  div id="#{dom_id(personal_data)}"
+
+    div.flex.items-center
+      strong.block.font-medium.mb-1 First Name:
+      span.ml-2 = personal_data.first_name
+
+    div.flex.items-center
+      strong.block.font-medium.mb-1 Last Name:
+      span.ml-2 = personal_data.last_name
+
+    div.flex.items-center
+      strong.block.font-medium.mb-1 Nickname:
+      span.ml-2 = personal_data.nick_name
+
+    div.flex.items-center
+      strong.block.font-medium.mb-1 Email:
+      span.ml-2 = personal_data.email_address
+
+    div.flex.items-center
+      strong.block.font-medium.mb-1 Phone Number:
+      span.ml-2 = personal_data.phone_number
+
+    - if personal_data.employments.any?
+      <div class="font-semibold text-lg mt-4">Employments:</div>
+      table.w-full.mt-4
+        thead.bg-green-100.border.px-8.py-4
+          th Employer
+          th Date Started
+          th Date Ended
+        tbody
+          - personal_data.employments.each do |employment|
+            tr.border.text-center.px-8.py-4
+              td.border
+                = employment.employer
+              td.border
+                = employment.date_started
+              td.border
+                = employment.date_ended
+
+    - if action_name != "show"
+      = link_to "Show this personal data", personal_data, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium"
+      hr.mt-6
+
+- if defined?(personal_info)
+  .flex.justify-center.items-center.mt-28.mb-28
+    table.w-full
+      th.bg-green-100.border.px-8.py-4 First Name
+      th.bg-green-100.border.px-8.py-4 Last Name
+      th.bg-green-100.border.px-8.py-4 Nick Name
+      th.bg-green-100.border.px-8.py-4 Email Address
+      th.bg-green-100.border.px-8.py-4 Phone Number
+      tbody
+        - personal_info.each do |data|
+          tr.border.text-center.px-8.py-4
+            td.border
+              a.underline.text-blue-500 href="/personal_data/#{data.id}"
+                = data.first_name
+            td.border
+              = data.last_name
+            td.border
+              = data.nick_name
+            td.border
+              = data.email_address
+            td.border
+              = data.phone_number

@@ -50,12 +50,12 @@
       th.bg-green-100.border.px-8.py-4 Nick Name
       th.bg-green-100.border.px-8.py-4 Email Address
       th.bg-green-100.border.px-8.py-4 Phone Number
+      th.bg-green-100.border.px-8.py-4 Action
       tbody
         - personal_info.each do |data|
           tr.border.text-center.px-8.py-4
             td.border
-              a.underline.text-blue-500 href="/personal_data/#{data.id}"
-                = data.first_name
+              = data.first_name
             td.border
               = data.last_name
             td.border
@@ -64,3 +64,6 @@
               = data.email_address
             td.border
               = data.phone_number
+            td.border
+             a.underline.text-blue-500 href="/personal_data/#{data.id}"
+              = 'Show'

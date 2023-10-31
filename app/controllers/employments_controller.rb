@@ -15,8 +15,8 @@ class EmploymentsController < ApplicationController
   def add_employment
     helpers.fields model: Employment.new do |f|
       render turbo_stream: turbo_stream.append(
-        "add-employment",
-        partial: "employments/employment_fields",
+        'add-employment',
+        partial: 'employments/employment_fields',
         locals: { f: f, first_employment: nil }
       )
     end

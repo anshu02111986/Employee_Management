@@ -1,4 +1,6 @@
-class PersonalData < ApplicationRecord
+# frozen_string_literal: true
+
+class PersonalData < ApplicationRecord # rubocop:disable Style/Documentation
   has_many :employments, dependent: :destroy
 
   validates :first_name, presence: true, length: { maximum: 25 }
